@@ -7,9 +7,10 @@ import {
   updateProduct,
   deleteProduct,
 } from './controllers/product';
+require('dotenv').config();
 
 const app = express();
-const port = 9000;
+const port = `${process.env.PORT}`;
 app.use(express.json());
 
 db.sync({ alter: true })
