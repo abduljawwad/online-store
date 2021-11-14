@@ -31,9 +31,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "ts-node-dev --respawn src/server.ts",
-    "compile": "tsc"
+    "compile": "tsc",
+    "model": "npx sequelize-cli model:generate",
+    "migrate": "npx sequelize-cli db:migrate"
   },
-  "type": "module",
   "eslintConfig": {
     "extends": [
       "react-app",

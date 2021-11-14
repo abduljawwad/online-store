@@ -66,5 +66,6 @@ ProductInstance.init(
   {
     sequelize: db,
     tableName: 'Products',
+    timestamps: false,
   }
 );
