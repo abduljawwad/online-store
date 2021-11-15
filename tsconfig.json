@@ -8,6 +8,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "product.ts", "20211114211605-create-product.js"],
+  "include": ["src/**/*"],
   "exclude": ["src/types/*.ts", "node_modules", ".vscode"]
 }
