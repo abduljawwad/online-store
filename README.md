@@ -1,18 +1,18 @@
-# Tech Stack
+## Tech Stack
 
 ### This is a backend project created with Express.js, PostgreSQL with Sequelize ORM
 
 ## Main Features
 
-### Following 3 tables are defined.
-
-#### Product needs to be created first before creating a review or description for that product
+### Following 3 tables are defined:
 
 #### Product
 
 #### Review
 
 #### Description
+
+#### Product needs to be created first before creating a review or description for that product
 
 ### Associations:
 
