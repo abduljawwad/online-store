@@ -1,8 +1,52 @@
-# Getting Started with Create React App
+# Tech Stack
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### This is a backend project created with Express.js, PostgreSQL with Sequelize ORM
+
+## Main Features
+
+### There are 3 tables. Product needs to be created first before creating a review or description for that product
+
+#### Product
+
+#### Review
+
+#### Description
+
+### Associations:
+
+#### Product(1) <--> Review(n) (One to Many association)
+
+#### Product(1) <--> Description(1) (One to One association)
+
+## Technical considerations
+
+### Foreign keys reside in review table and description table for a given product because a review or description is dependent on a product
+
+### Also, deleting a review or description becomes possible without touching the product table
+
+## Pre-Requisites
+
+Please ensure you have the following softwares installed & setup before proceeding further:
+
+1. Node.js
+2. Prettier (VS Code extension)
+3. Postgres & pgAdmin (for viewing tables using GUI)
 
 ## Available Scripts
+
+In the project directory, you can run:
+
+### `cd src`
+
+### `yarn run dev`
+
+Starts the server at port# 9000 in the development mode.
+
+Once the server starts successfully, routes can be setup on Postman and tested. Results will be visible in pgAdmin once seed data is populated.
+
+### Product has to be created first as all other tables are dependent upon it
+
+### Review | Description can be created in any order after Product has been created
 
 In the project directory, you can run:
 
@@ -13,34 +57,3 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
