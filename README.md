@@ -4,7 +4,9 @@
 
 ## Main Features
 
-### There are 3 tables. Product needs to be created first before creating a review or description for that product
+### Following 3 tables are defined.
+
+#### Product needs to be created first before creating a review or description for that product
 
 #### Product
 
@@ -34,26 +36,12 @@ Please ensure you have the following softwares installed & setup before proceedi
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, please run the following commands in the given order:
 
 ### `cd src`
 
 ### `yarn run dev`
 
-Starts the server at port# 9000 in the development mode.
+Starts the express server at port# 9000.
 
 Once the server starts successfully, routes can be setup on Postman and tested. Results will be visible in pgAdmin once seed data is populated.
-
-### Product has to be created first as all other tables are dependent upon it
-
-### Review | Description can be created in any order after Product has been created
-
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see lint errors in the console.
