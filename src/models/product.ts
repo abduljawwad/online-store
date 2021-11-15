@@ -77,13 +77,9 @@ export const Product: ModelDefined<
 );
 
 Product.hasMany(Review, {
-  sourceKey: 'id',
-  foreignKey: 'productId',
-  as: 'reviews',
+  foreignKey: 'product_id',
 });
+Review.belongsTo(Product);
 
-Product.hasOne(Description, { sourceKey: 'id' });
-
-Description.belongsTo(Product, { targetKey: 'id' });
-
-Review.belongsTo(Product, { targetKey: 'id' });
+Product.hasOne(Description, { foreignKey: 'product_id' });
+Description.belongsTo(Product);
