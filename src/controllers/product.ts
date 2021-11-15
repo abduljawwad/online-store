@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { ProductInstance } from '../models/product';
+import { Product } from '../models/product';
 import { Op } from 'sequelize';
 
 const router = express.Router();
@@ -8,7 +8,7 @@ export const createProduct = router.post(
   '/create',
   async (req: Request, res: Response) => {
     try {
-      const record = await ProductInstance.create({ ...req.body });
+      const record = await Product.create({ ...req.body });
       await res.json({
         record,
         msg: 'dB entry successfully created in product table',
@@ -23,7 +23,7 @@ export const getAllProducts = router.get(
   '/',
   async (req: Request, res: Response) => {
     try {
-      const products = await ProductInstance.findAll({});
+      const products = await Product.findAll({});
       res.json(products);
     } catch (error: any) {
       await res.json(error.message);
@@ -36,7 +36,7 @@ export const getProductsByName = router.get(
   async (req: Request, res: Response) => {
     const { name } = req.body;
     try {
-      const products = await ProductInstance.findAll({
+      const products = await Product.findAll({
         where: {
           name: {
             [Op.substring]: name,
@@ -53,13 +53,13 @@ export const getProductsByName = router.get(
 export const updateProduct = router.put(
   '/:id',
   async (req: Request, res: Response) => {
-    const { id: uuid } = req.params;
+    const { id } = req.params;
     try {
-      const products = await ProductInstance.update(
+      const products = await Product.update(
         { ...req.body },
         {
           where: {
-            uuid,
+            id,
           },
         }
       );
@@ -73,11 +73,11 @@ export const updateProduct = router.put(
 export const deleteProduct = router.delete(
   '/:id',
   async (req: Request, res: Response) => {
-    const { id: uuid } = req.params;
+    const { id } = req.params;
     try {
-      const products = await ProductInstance.destroy({
+      const products = await Product.destroy({
         where: {
-          uuid,
+          id,
         },
       });
       res.json(products);

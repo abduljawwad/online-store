@@ -1,12 +1,13 @@
 import db from '../config/db.config';
-import { Model, DataTypes } from 'sequelize';
+import { ModelDefined, DataTypes, Optional } from 'sequelize';
+import { Review } from './review';
+import { Description } from './description';
 
 interface ProductAttributes {
-  uuid: String;
+  id: String;
   brand: String;
   name: String;
   price: Number;
-  description: String;
   currencySign?: String;
   imageLink?: String;
   category?: String;
@@ -15,11 +16,24 @@ interface ProductAttributes {
   productColors?: String[];
 }
 
-export class ProductInstance extends Model<ProductAttributes> {}
+interface ProductCreationAttributes
+  extends Optional<
+    ProductAttributes,
+    | 'id'
+    | 'currencySign'
+    | 'imageLink'
+    | 'category'
+    | 'tagList'
+    | 'productColors'
+  > {}
 
-ProductInstance.init(
+export const Product: ModelDefined<
+  ProductAttributes,
+  ProductCreationAttributes
+> = db.define(
+  'Product',
   {
-    uuid: {
+    id: {
       type: DataTypes.UUID,
       allowNull: false,
       defaultValue: DataTypes.UUIDV4,
@@ -36,10 +50,6 @@ ProductInstance.init(
     },
     price: {
       type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.TEXT,
       allowNull: false,
     },
     currencySign: {
@@ -63,9 +73,17 @@ ProductInstance.init(
       type: DataTypes.ARRAY(DataTypes.TEXT),
     },
   },
-  {
-    sequelize: db,
-    tableName: 'Products',
-    timestamps: false,
-  }
+  { tableName: 'product', timestamps: false }
 );
+
+Product.hasMany(Review, {
+  sourceKey: 'id',
+  foreignKey: 'productId',
+  as: 'reviews',
+});
+
+Product.hasOne(Description, { sourceKey: 'id' });
+
+Description.belongsTo(Product, { targetKey: 'id' });
+
+Review.belongsTo(Product, { targetKey: 'id' });
