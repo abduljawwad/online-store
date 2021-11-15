@@ -79,7 +79,11 @@ export const Product: ModelDefined<
 Product.hasMany(Review, {
   foreignKey: 'product_id',
 });
-Review.belongsTo(Product);
+Review.belongsTo(Product, {
+  foreignKey: 'product_id',
+});
 
 Product.hasOne(Description, { foreignKey: 'product_id' });
-Description.belongsTo(Product);
+Description.belongsTo(Product, {
+  foreignKey: 'product_id',
+});

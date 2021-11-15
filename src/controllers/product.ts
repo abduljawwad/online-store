@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import { Product } from '../models/product';
 import { Op } from 'sequelize';
+import { Review } from '../models/review';
+import { Description } from '../models/description';
 
 const router = express.Router();
 
@@ -23,7 +25,9 @@ export const getAllProducts = router.get(
   '/',
   async (req: Request, res: Response) => {
     try {
-      const products = await Product.findAll({});
+      const products = await Product.findAll({
+        include: [Review, Description],
+      });
       res.json(products);
     } catch (error: any) {
       await res.json(error.message);
@@ -42,6 +46,7 @@ export const getProductsByName = router.get(
             [Op.substring]: name,
           },
         },
+        include: [Review, Description],
       });
       res.json(products);
     } catch (error: any) {
