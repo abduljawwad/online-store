@@ -2,6 +2,8 @@
 
 ### This is a backend project created with Express.js, PostgreSQL with Sequelize ORM
 
+### Started with React in the hope of creating at least a simple front end
+
 ## Main Features
 
 ### Following 3 tables are defined:
@@ -26,6 +28,8 @@
 
 ### Also, deleting a review or description becomes possible without touching the product table
 
+### Eager loading of reviews and description when calling getAllProducts.
+
 ## Pre-Requisites
 
 Please ensure you have the following softwares installed & setup before proceeding further:
@@ -36,7 +40,17 @@ Please ensure you have the following softwares installed & setup before proceedi
 
 ## Available Scripts
 
-In the project directory, please run the following commands in the given order:
+In the project directory, please set the following environment variables correctly:
+
+### DB="mydB"
+
+### DB_USERNAME= "username"
+
+### DB_PASSWORD= "password"
+
+### PORT=9000
+
+Please run the following commands in the given order:
 
 ### `cd src`
 
