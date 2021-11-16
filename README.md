@@ -30,6 +30,8 @@
 
 ### Eager loading of reviews and description when calling getAllProducts.
 
+### Implemented sequelize ttransactions for auto-committing & auto roll-back based on the result of a promise chain and, (if enabled) pass the transaction to all calls within the callback
+
 ## Pre-Requisites
 
 Please ensure you have the following softwares installed & setup before proceeding further:
