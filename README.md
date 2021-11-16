@@ -40,15 +40,17 @@ Please ensure you have the following softwares installed & setup before proceedi
 
 ## Available Scripts
 
-In the project directory, please set the following environment variables correctly:
+In the project directory, please set the following environment variables correctly for your postgres accounts:
 
-### DB="mydB"
+For example:
 
-### DB_USERNAME= "username"
+#### `DB="mydB"`
 
-### DB_PASSWORD= "password"
+#### `DB_USERNAME= "username"`
 
-### PORT=9000
+#### `DB_PASSWORD= "password"`
+
+#### `PORT=9000`
 
 Please run the following commands in the given order:
 
