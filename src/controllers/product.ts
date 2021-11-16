@@ -3,6 +3,8 @@ import { Product } from '../models/product';
 import { Op } from 'sequelize';
 import { Review } from '../models/review';
 import { Description } from '../models/description';
+import db from '../config/db.config';
+import { Transaction } from 'sequelize/types';
 
 const router = express.Router();
 
@@ -10,13 +12,17 @@ export const createProduct = router.post(
   '/create',
   async (req: Request, res: Response) => {
     try {
-      const record = await Product.create({ ...req.body });
-      await res.json({
-        record,
-        msg: 'dB entry successfully created in product table',
+      const product = await db.transaction(async (t: Transaction) => {
+        await Product.create({ ...req.body }, { transaction: t });
       });
+      await res
+        .send({
+          product,
+          msg: 'dB entry successfully created in product table',
+        })
+        .status(201);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -28,9 +34,9 @@ export const getAllProducts = router.get(
       const products = await Product.findAll({
         include: [Review, Description],
       });
-      res.json(products);
+      res.send(products).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -48,9 +54,9 @@ export const getProductsByName = router.get(
         },
         include: [Review, Description],
       });
-      res.json(products);
+      res.send(products).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -60,17 +66,19 @@ export const updateProduct = router.put(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const products = await Product.update(
-        { ...req.body },
-        {
-          where: {
-            id,
-          },
-        }
-      );
-      res.json(products);
+      const products = await db.transaction(async (t: Transaction) => {
+        await Product.update(
+          { ...req.body },
+          {
+            where: {
+              id,
+            },
+          }
+        );
+      });
+      res.send(products).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -80,14 +88,16 @@ export const deleteProduct = router.delete(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const products = await Product.destroy({
-        where: {
-          id,
-        },
+      const products = await db.transaction(async (t: Transaction) => {
+        await Product.destroy({
+          where: {
+            id,
+          },
+        });
       });
-      res.json(products);
+      return res.send(products).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );

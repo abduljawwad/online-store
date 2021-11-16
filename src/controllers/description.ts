@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+import { Transaction } from 'sequelize/types';
+import db from '../config/db.config';
 import { Description } from '../models/description';
 
 const router = express.Router();
@@ -8,13 +10,20 @@ export const createDescription = router.post(
   async (req: Request, res: Response) => {
     const { id: product_id } = req.params;
     try {
-      const record = await Description.create({ ...req.body, product_id });
-      await res.json({
-        record,
-        msg: 'dB entry successfully created in product table',
+      const record = db.transaction(async (t: Transaction) => {
+        await Description.create(
+          { ...req.body, product_id },
+          { transaction: t }
+        );
       });
+      await res
+        .send({
+          record,
+          msg: 'dB entry successfully created in product table',
+        })
+        .status(201);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -24,9 +33,9 @@ export const getAllDescriptions = router.get(
   async (req: Request, res: Response) => {
     try {
       const descriptions = await Description.findAll({});
-      res.json(descriptions);
+      await res.send(descriptions).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -36,17 +45,19 @@ export const updateDescription = router.put(
   async (req: Request, res: Response) => {
     const { id } = req.body;
     try {
-      const description = await Description.update(
-        { ...req.body },
-        {
-          where: {
-            id,
-          },
-        }
-      );
-      res.json(description);
+      const description = await db.transaction(async (t: Transaction) => {
+        await Description.update(
+          { ...req.body },
+          {
+            where: {
+              id,
+            },
+          }
+        );
+      });
+      await res.send(description).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -56,14 +67,17 @@ export const deleteDescription = router.delete(
   async (req: Request, res: Response) => {
     const { id } = req.body;
     try {
-      const description = await Description.destroy({
-        where: {
-          id,
-        },
+      const description = await db.transaction(async (t: Transaction) => {
+        await Description.destroy({
+          where: {
+            id,
+          },
+        });
       });
-      res.json(description);
+
+      await res.send(description).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );

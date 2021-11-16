@@ -1,4 +1,6 @@
 import express, { Request, Response } from 'express';
+import { Transaction } from 'sequelize/types';
+import db from '../config/db.config';
 import { Review } from '../models/review';
 
 const router = express.Router();
@@ -8,13 +10,15 @@ export const createReview = router.post(
   async (req: Request, res: Response) => {
     const { id: product_id } = req.params;
     try {
-      const record = await Review.create({ ...req.body, product_id });
-      await res.json({
-        record,
-        msg: 'dB entry successfully created in product table',
-      });
+      const review = await Review.create({ ...req.body, product_id });
+      await res
+        .send({
+          review,
+          msg: 'dB entry successfully created in product table',
+        })
+        .status(201);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -24,9 +28,9 @@ export const getAllReviews = router.get(
   async (req: Request, res: Response) => {
     try {
       const reviews = await Review.findAll({});
-      res.json(reviews);
+      await res.send(reviews).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -36,17 +40,19 @@ export const updateReview = router.put(
   async (req: Request, res: Response) => {
     const { id } = req.body;
     try {
-      const review = await Review.update(
-        { ...req.body },
-        {
-          where: {
-            id,
-          },
-        }
-      );
-      res.json(review);
+      const review = await db.transaction(async (t: Transaction) => {
+        await Review.update(
+          { ...req.body },
+          {
+            where: {
+              id,
+            },
+          }
+        );
+      });
+      await res.send(review).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
@@ -56,14 +62,16 @@ export const deleteReview = router.delete(
   async (req: Request, res: Response) => {
     const { id } = req.body;
     try {
-      const review = await Review.destroy({
-        where: {
-          id,
-        },
+      const review = await db.transaction(async (t: Transaction) => {
+        await Review.destroy({
+          where: {
+            id,
+          },
+        });
       });
-      res.json(review);
+      await res.send(review).status(200);
     } catch (error: any) {
-      await res.json(error.message);
+      await res.send(error.message).status(404);
     }
   }
 );
